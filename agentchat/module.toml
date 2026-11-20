@@ -1,0 +1,10 @@
+id = "agentchat"
+name = "Agent Chat"
+version = "0.1.0"
+api = 1
+entry = "main:AgentChatModule"
+description = "Sends what you type to an agent and plays a filler while you wait. The agent speaks the reply."
+author = "MiraSpeak"
+permissions = ["network", "filler"]
+post_to_chat = false
+keep_page = true
