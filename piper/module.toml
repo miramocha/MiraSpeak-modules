@@ -1,0 +1,11 @@
+id = "piper"
+name = "Piper"
+version = "0.3.0"
+api = 1
+entry = "main:PiperModule"
+description = "Local English Piper voices on the CPU. Download one speaker at a time."
+author = "MiraSpeak"
+permissions = ["voice_engine", "network"]
+post_to_chat = false
+# piper-tts needs onnxruntime and numpy; MiraSpeak already ships them, so the locks leave them out.
+requires = ["piper-tts==1.8.0", "pathvalidate==3.3.1"]
