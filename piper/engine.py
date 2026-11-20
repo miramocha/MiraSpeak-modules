@@ -5,6 +5,7 @@ MiraSpeak creates the adapter and calls it on its own synthesis threads, not the
 
 from __future__ import annotations
 
+import contextlib
 import json
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
@@ -142,26 +143,54 @@ def read_voice_index(path: Path | None = None) -> tuple[PiperVoiceInfo, ...]:
     return parse_voice_index(data)
 
 
+def _index_readable(path: Path) -> bool:
+    """True when *path* is present and ``read_voice_index`` can load it."""
+    if not path.is_file():
+        return False
+    try:
+        read_voice_index(path)
+    except AdapterError:
+        return False
+    return True
+
+
+def _drop_unreadable_index(path: Path) -> None:
+    """Delete an index that cannot be read. A missing or valid file stays."""
+    if _index_readable(path):
+        return
+    with contextlib.suppress(OSError):
+        path.unlink(missing_ok=True)
+
+
 def ensure_voice_index(
     *,
     force: bool = False,
     on_progress: ProgressCallback | None = None,
     should_stop: Callable[[], bool] | None = None,
 ) -> Path:
-    """Download ``voices.json`` into the Piper folder."""
+    """Download ``voices.json`` into the Piper folder. An unreadable file is replaced."""
     piper_dir().mkdir(parents=True, exist_ok=True)
     dest = index_path()
-    if dest.is_file() and not force:
+    if not force and _index_readable(dest):
         if on_progress is not None:
             on_progress(dest.name, 100, dest.stat().st_size)
         return dest
-    download_to(
-        INDEX_URL,
-        dest,
-        timeout_s=DOWNLOAD_TIMEOUT_S,
-        on_progress=on_progress,
-        should_stop=should_stop,
-    )
+    try:
+        download_to(
+            INDEX_URL,
+            dest,
+            timeout_s=DOWNLOAD_TIMEOUT_S,
+            on_progress=on_progress,
+            should_stop=should_stop,
+        )
+    except Exception:
+        _drop_unreadable_index(dest)
+        raise
+    try:
+        read_voice_index(dest)
+    except AdapterError:
+        _drop_unreadable_index(dest)
+        raise
     return dest
 
 
@@ -187,9 +216,18 @@ def download_voice(
 
 
 def remove_voice_files(voice_id: str) -> None:
-    """Delete one voice's ONNX and JSON. Missing files are fine."""
+    """Delete one voice's ONNX and JSON. Missing files are fine.
+
+    A file MiraSpeak still has open raises OSError after the others are removed.
+    """
+    failed: OSError | None = None
     for path in voice_paths(voice_id):
-        path.unlink(missing_ok=True)
+        try:
+            path.unlink(missing_ok=True)
+        except OSError as e:
+            failed = e
+    if failed is not None:
+        raise failed
 
 
 def _download_file(
@@ -294,8 +332,9 @@ class PiperAdapter(Adapter):
     def unavailable_reason(cls, config: Mapping[str, Any], secrets: Any) -> str | None:
         if not runtime_installed():
             return RUNTIME
-        natives = list(english_voices(config.get("voices")).values())
-        if not natives or any(not voice_installed(native) for native in natives):
+        natives = english_voices(config.get("voices")).values()
+        # One missing voice is that voice's problem. Hide Piper only when none are installed.
+        if not any(voice_installed(native) for native in natives):
             return MISSING
         return None
 

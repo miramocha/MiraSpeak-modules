@@ -289,10 +289,16 @@ class PiperModule(Module):
             self._status("That voice is not installed.", ui.TONE_WARNING)
             return
         voice_id = voices.pop(alias)
-        remove_voice_files(voice_id)
         try:
+            # Drop the voice from config first so a failed save keeps the files, and so
+            # MiraSpeak can release a loaded session before the unlink.
             self._save_voices(voices)
         except ModuleError as e:
             self._status(str(e), ui.TONE_WARNING)
+            return
+        try:
+            remove_voice_files(voice_id)
+        except OSError:
+            self._status(f"Removed {alias}. The voice files are still on disk.", ui.TONE_WARNING)
             return
         self._status(f"Removed {alias}.")
