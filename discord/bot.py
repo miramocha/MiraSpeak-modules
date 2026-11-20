@@ -326,12 +326,19 @@ class BotRunner:
                 self._leaving = True
                 await other.disconnect(force=True)
         voice = channel.guild.voice_client
+        # A timed-out connect leaves the client registered. With no channel, reading
+        # voice.channel.id crashes the join; still in this channel but not connected,
+        # the next attempt would report joined and then play nothing.
+        if voice is not None and (voice.channel is None or not voice.is_connected()):
+            await self._drop_failed_voice(channel)
+            voice = None
         try:
             if voice is None:
                 await channel.connect(timeout=JOIN_TIMEOUT_S, reconnect=True)
             elif voice.channel.id != channel.id:
                 await voice.move_to(channel)
         except (TimeoutError, discord.DiscordException) as e:  # before OSError: it is one
+            await self._drop_failed_voice(channel)
             self._report("failed", f"Could not join #{channel.name}: {e or 'timed out'}")
             return
         except (OSError, aiohttp.ClientError) as e:  # includes ClientConnectorError

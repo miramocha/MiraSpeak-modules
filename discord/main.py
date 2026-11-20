@@ -170,6 +170,7 @@ class DiscordModule(Module):
         self._runner: Any = None
         self._ready = False
         self._joined = False
+        self._joining = False  # a connect is in flight; another one would abort it
         self._guilds: dict[str, tuple[tuple[str, str], ...]] = {}
         self._pending: AudioStream | None = None
         self._leave_reason = ""
@@ -285,19 +286,23 @@ class DiscordModule(Module):
 
     def _close_runner(self) -> None:
         runner, self._runner = self._runner, None
-        self._ready = self._joined = False
+        self._ready = self._joined = self._joining = False
         self._sync_controls()
         if runner is not None:
             runner.close()
 
     def _sync_controls(self) -> None:
-        """Gray out the voice controls until connected, and Test sound and Leave until joined."""
+        """Gray out controls until they can be used.
+
+        Voice controls wait until connected, Join while a connect is in progress,
+        and Test sound and Leave until the bot is in a channel.
+        """
         has_channels = any(self._guilds.values())
         wanted = {
             "guild": self._ready,
             "channel": self._ready,
             "refresh": self._ready,
-            "join": self._ready and has_channels,
+            "join": self._ready and has_channels and not self._joining,
             "test_sound": self._joined,
             "leave": self._joined,
             "set_avatar": self._ready,
@@ -365,10 +370,16 @@ class DiscordModule(Module):
         if self._runner is None or not self._ready:
             self._status("Press Connect first.", warn=True)
             return
+        # A connect takes long enough for another line, or a second click, to start
+        # one too. That attempt fails and throws away the line waiting to play.
+        if self._joining:
+            return
         channel_id = self._channel_id()
         if channel_id is None:
             self._status("Pick a voice channel first.", warn=True)
             return
+        self._joining = True
+        self._sync_controls()
         self._status("Joining…")
         self._runner.join(channel_id)
 
@@ -389,23 +400,24 @@ class DiscordModule(Module):
         elif kind == "guilds":
             self._on_guilds(detail)
         elif kind == "joined":
+            self._joining = False
             self._joined = True
             self._sync_controls()
             self._status(f"In #{detail}.")
             self._play_pending()
         elif kind == "left":
-            self._joined = False
+            self._joined = self._joining = False
             self._sync_controls()
             self._drop_pending()
             self._status(self._leave_reason or "Left the voice channel.")
             self._leave_reason = ""
         elif kind == "kicked":
-            self._joined = False
+            self._joined = self._joining = False
             self._sync_controls()
             self._drop_pending()
             self._status(f"Removed from #{detail}. Press Join to return.", warn=True)
         elif kind == "disconnected":  # login failed or the connection dropped for good
-            self._ready = self._joined = False
+            self._ready = self._joined = self._joining = False
             self._sync_controls()
             self._drop_pending()
         elif kind == "played":
@@ -419,6 +431,8 @@ class DiscordModule(Module):
                 )
             self._status(text, warn=loud == 0 or not encrypted)
         elif kind == "failed":
+            self._joining = False
+            self._sync_controls()
             self._drop_pending()
             self._status(str(detail), warn=True)
         elif kind in ("profile", "profile_failed"):
