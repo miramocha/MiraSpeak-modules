@@ -35,8 +35,8 @@ from miraspeak.modules.engine_api import (
 )
 
 ENGINE_ID = "piper"
-MISSING = "Piper voice is not downloaded. Open the Piper module."
-RUNTIME = "The Piper packages are not installed. Remove the Piper module and install it again."
+MISSING = "Piper voices not downloaded"
+RUNTIME = "Piper packages not installed. Reinstall the Piper module"
 ENGLISH_ONLY = "Piper currently supports English voices only."
 DEFAULT_VOICE_ID = "en_US-lessac-medium"
 HF_BASE = "https://huggingface.co/rhasspy/piper-voices/resolve/main"

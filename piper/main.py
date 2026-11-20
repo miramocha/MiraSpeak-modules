@@ -66,13 +66,6 @@ class PiperModule(Module):
                         ui.Status("license", LICENSE_NOTE),
                     ),
                 ),
-                ui.Section(
-                    "Speech",
-                    (
-                        ui.Toggle("cache", "Cache lines so Replay skips generating them"),
-                        ui.Number("synth_ahead", "Generate ahead", default=1, minimum=1, maximum=5),
-                    ),
-                ),
             )
         )
 
@@ -103,15 +96,6 @@ class PiperModule(Module):
         elif action == REMOVE and row is not None and 0 <= row < len(self._installed):
             self._remove(self._installed[row][0])
 
-    def on_value(self, key: str, value: object) -> None:
-        try:
-            if key == "cache":
-                self._ctx.set_engine_config(ENGINE_ID, cache=bool(value))
-            elif key == "synth_ahead" and isinstance(value, int | float):
-                self._ctx.set_engine_config(ENGINE_ID, synth_ahead=int(value))
-        except ModuleError as e:
-            self._status(str(e), ui.TONE_WARNING)
-
     # settings
 
     @property
@@ -128,16 +112,10 @@ class PiperModule(Module):
         return english_voices(table.get("voices"))
 
     def _sync_from_settings(self) -> None:
-        try:
-            table = self._ctx.engine_config(ENGINE_ID)
-        except ModuleError:
+        voices = self._voices()
+        if voices is None:
             return
-        if bool(table.get("cache", False)) != bool(self._ctx.values.get("cache", False)):
-            self._ctx.ui.set("cache", bool(table.get("cache", False)))
-        ahead = table.get("synth_ahead")
-        if isinstance(ahead, int) and ahead != self._ctx.values.get("synth_ahead"):
-            self._ctx.ui.set("synth_ahead", ahead)
-        self._show_installed(english_voices(table.get("voices")))
+        self._show_installed(voices)
         self._show_choices()
 
     def _save_voices(self, voices: dict[str, str]) -> None:

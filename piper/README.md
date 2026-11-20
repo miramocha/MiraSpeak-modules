@@ -18,7 +18,7 @@ It asks for **voice engine** and **network**. It also installs these Python pack
 
 The download from PyPI is about 33 MB. A Python module runs inside MiraSpeak with the same access as the app.
 
-Then open the module page, pick a voice, and press **Download**. Piper shows up in the engine list once a voice is installed.
+Then open **Voice Engines → In-App** and pick **Piper** in the Engine list, the same place the built-in Piper was. Pick a voice and press **Download**. MiraSpeak adds its own speech cache and generate-ahead settings under the page.
 
 ## Coming from the built-in Piper
 
