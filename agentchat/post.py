@@ -24,7 +24,7 @@ def post_message(
     use the same body. The caller closes nothing; a client passed in stays open.
     """
     if preset not in {PRESET_GROK, PRESET_PLAIN} or not webhook_url_allowed(url):
-        raise ValueError("That webhook URL is not one MiraSpeak will call.")
+        raise ValueError("That webhook URL isn't one MiraSpeak will call.")
     headers = {"Content-Type": "application/json"}
     if key:
         headers["Authorization"] = f"Bearer {key}"
