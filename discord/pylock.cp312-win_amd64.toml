@@ -1,0 +1,95 @@
+lock-version = "1.0"
+created-by = "uv"
+requires-python = ">=3.12"
+
+[[packages]]
+name = "aiohappyeyeballs"
+version = "2.7.1"
+wheels = [{ url = "https://files.pythonhosted.org/packages/71/43/1947f06babed6b3f1d7f38b0c767f52df66bfb2bc10b468c4a7de9eceff2/aiohappyeyeballs-2.7.1-py3-none-any.whl", upload-time = 2026-07-01T17:11:54Z, size = 15038, hashes = { sha256 = "9243213661e29250eb41368e5daa826fc017156c3b8a11440826b2e3ed376472" } }]
+
+[[packages]]
+name = "aiohttp"
+version = "3.14.5"
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ae/ce/1f08114679d49655b30a6e0a29858375c94b82c1de1a0bd0a20c2fee8b02/aiohttp-3.14.5-cp312-cp312-win_amd64.whl", upload-time = 2026-10-11T01:00:50Z, size = 506141, hashes = { sha256 = "2cc38a4f2b516bef1714e690df87a0e043faf1a7693c82d860091684453d5111" } },
+    { url = "https://files.pythonhosted.org/packages/68/30/173960c42b05a6c59f7558e4b12a4b0d9ba376cf6aa9bde7f9e08a30ca8d/aiohttp-3.14.5-py3-none-any.whl", upload-time = 2026-10-11T01:05:08Z, size = 279517, hashes = { sha256 = "efc21a454892828368b11c2c780de0ff8bc991f73f6b99c6b66e56205470929b" } },
+]
+
+[[packages]]
+name = "aiosignal"
+version = "1.4.0"
+wheels = [{ url = "https://files.pythonhosted.org/packages/fb/76/641ae371508676492379f16e2fa48f4e2c11741bd63c48be4b12a6b09cba/aiosignal-1.4.0-py3-none-any.whl", upload-time = 2025-07-03T22:54:42Z, size = 7490, hashes = { sha256 = "053243f8b92b990551949e63930a839ff0cf0b0ebbe0597b0f3fb19e1a0fe82e" } }]
+
+[[packages]]
+name = "attrs"
+version = "26.1.0"
+wheels = [{ url = "https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl", upload-time = 2026-03-19T14:22:23Z, size = 67548, hashes = { sha256 = "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309" } }]
+
+[[packages]]
+name = "cffi"
+version = "2.1.1"
+wheels = [{ url = "https://files.pythonhosted.org/packages/d9/79/615cc094e2fb508cade7de88d3b4f6c4ec2bab695c97bce9153dc65aadf5/cffi-2.1.1-cp312-cp312-win_amd64.whl", upload-time = 2026-08-03T21:19:56Z, size = 185919, hashes = { sha256 = "f53e442b08449d42821fa4a4fba000095af9f62742a500f978a9f557ec44339a" } }]
+
+[[packages]]
+name = "davey"
+version = "0.1.7"
+wheels = [{ url = "https://files.pythonhosted.org/packages/94/1d/46ef15209b03ff233a426fc39e5d26d736b87cba470492e7a76c6ca47738/davey-0.1.7-cp312-cp312-win_amd64.whl", upload-time = 2026-10-12T03:42:18Z, size = 864940, hashes = { sha256 = "d7d3de4ba672750fb79cc67b3da44ba7d66549ef05ce347d180c6bf652f4fecc" } }]
+
+[[packages]]
+name = "discord-py"
+version = "2.7.1"
+wheels = [{ url = "https://files.pythonhosted.org/packages/f7/a7/17208c3b3f92319e7fad259f1c6d5a5baf8fd0654c54846ced329f83c3eb/discord_py-2.7.1-py3-none-any.whl", upload-time = 2026-03-03T18:40:44Z, size = 1227550, hashes = { sha256 = "849dca2c63b171146f3a7f3f8acc04248098e9e6203412ce3cf2745f284f7439" } }]
+
+[[packages]]
+name = "frozenlist"
+version = "1.8.0"
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b8/af/38e51a553dd66eb064cdf193841f16f077585d4d28394c2fa6235cb41765/frozenlist-1.8.0-cp312-cp312-win_amd64.whl", upload-time = 2025-10-06T05:36:24Z, size = 44591, hashes = { sha256 = "34187385b08f866104f0c0617404c8eb08165ab1272e884abc89c112e9c00746" } },
+    { url = "https://files.pythonhosted.org/packages/9a/9a/e35b4a917281c0b8419d4207f4334c8e8c5dbf4f3f5f9ada73958d937dcc/frozenlist-1.8.0-py3-none-any.whl", upload-time = 2025-10-06T05:38:16Z, size = 13409, hashes = { sha256 = "0c18a16eab41e82c295618a77502e17b195883241c563b00f0aa5106fc4eaa0d" } },
+]
+
+[[packages]]
+name = "idna"
+version = "3.20"
+wheels = [{ url = "https://files.pythonhosted.org/packages/58/a2/bb081bab032533a855d44de1d56f8e8426114ff1ba5d1f07a438a0a654f8/idna-3.20-py3-none-any.whl", upload-time = 2026-09-17T14:11:03Z, size = 69583, hashes = { sha256 = "ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c" } }]
+
+[[packages]]
+name = "multidict"
+version = "7.2.1"
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/68/d5/64108a33c21bde81454b5a400d16baa1378a7d01599de64b131c3e3e3114/multidict-7.2.1-cp312-cp312-win_amd64.whl", upload-time = 2026-10-24T20:40:19Z, size = 95372, hashes = { sha256 = "781ca5dfc2f1d58e47f52216a0c1c7e1ba91ce8aa235459e20de2d402af77fb3" } },
+    { url = "https://files.pythonhosted.org/packages/9d/96/1aaad0e5df33f1f5af21775c411349c0234a6edd581ea403bc81919a6eab/multidict-7.2.1-py3-none-any.whl", upload-time = 2026-10-24T20:40:59Z, size = 28145, hashes = { sha256 = "08ea94663d9e7c25d14d78222f7aee906c472d4837766bec62477c38f6e419dc" } },
+]
+
+[[packages]]
+name = "propcache"
+version = "0.5.4"
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/58/7b/6e8ef26f6d510a7916064fec68d55fcbfbdf7eb01e377480d66a122152d8/propcache-0.5.4-cp312-cp312-win_amd64.whl", upload-time = 2026-09-16T00:14:49Z, size = 46190, hashes = { sha256 = "98914de2c4d7f0f9f4a8c6ea4bf05841f4175796941e3ef7d47eb718f22311fb" } },
+    { url = "https://files.pythonhosted.org/packages/f5/cd/785c64ed382f3f04201870267b02783f63b4678c2acfddc177a3ebcc2727/propcache-0.5.4-py3-none-any.whl", upload-time = 2026-09-16T00:17:13Z, size = 16338, hashes = { sha256 = "62c60aec739ed00124573cce1178138fd690c7676352d67a37328c1cf51d7468" } },
+]
+
+[[packages]]
+name = "pycparser"
+version = "3.12"
+marker = "implementation_name != 'PyPy'"
+wheels = [{ url = "https://files.pythonhosted.org/packages/b6/ae/315bbeee126a769cbde43cf4908acb4b40408d8bf8bbf334dd7368d8dadf/pycparser-3.12-py3-none-any.whl", upload-time = 2026-10-22T13:40:02Z, size = 62600, hashes = { sha256 = "a076f3f489b39b43ed13563a1dafe42447445bec2e294154ec5c57fcdda4c85e" } }]
+
+[[packages]]
+name = "pynacl"
+version = "1.5.0"
+wheels = [{ url = "https://files.pythonhosted.org/packages/5e/22/d3db169895faaf3e2eda892f005f433a62db2decbcfbc2f61e6517adfa87/PyNaCl-1.5.0-cp36-abi3-win_amd64.whl", upload-time = 2022-01-07T22:06:01Z, size = 212141, hashes = { sha256 = "20f42270d27e1b6a29f54032090b972d97f0a1b0948cc52392041ef7831fee93" } }]
+
+[[packages]]
+name = "typing-extensions"
+version = "4.16.0"
+marker = "python_full_version < '3.13'"
+wheels = [{ url = "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl", upload-time = 2026-07-02T08:40:04Z, size = 45571, hashes = { sha256 = "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8" } }]
+
+[[packages]]
+name = "yarl"
+version = "1.25.1"
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bb/cc/51a7b4abf4ac593b8e7eb3794b28e5a35ae26eed8bc04787628d215af82f/yarl-1.25.1-cp312-cp312-win_amd64.whl", upload-time = 2026-09-15T19:31:33Z, size = 102593, hashes = { sha256 = "7d575b54cb3863ef9bc290ea4b009999d55dc237326131e4853cf33e888fee03" } },
+    { url = "https://files.pythonhosted.org/packages/54/22/318c7980066769c6bcd9221ed2248294f5698811da099013098c670565ed/yarl-1.25.1-py3-none-any.whl", upload-time = 2026-09-15T19:34:59Z, size = 63617, hashes = { sha256 = "681c758b0490f9e96b78e5fa8e8dc6e648e9185bb6eaebe73183c33ea0c445f3" } },
+]

@@ -1,0 +1,13 @@
+id = "discord"
+name = "Discord"
+version = "0.2.0"
+api = 1
+entry = "main:DiscordModule"
+description = "A Discord bot joins your voice channel and plays everything MiraSpeak speaks, so you need no virtual audio cable."
+author = "MiraSpeak"
+permissions = ["audio", "network", "observe_lines"]
+post_to_chat = false
+# davey stays below 0.2: 0.2 stops setting voice keys in process_commit, and discord.py 2.7.1
+# does not call prepare_transition / execute_transition, so the bot would send audio no one
+# can decrypt. Change both pins together, then rebuild the pylock files (see README).
+requires = ["discord.py[voice]==2.7.1", "davey==0.1.7"]
