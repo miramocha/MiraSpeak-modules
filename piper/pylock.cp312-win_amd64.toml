@@ -1,0 +1,13 @@
+lock-version = "1.0"
+created-by = "uv"
+requires-python = ">=3.12"
+
+[[packages]]
+name = "pathvalidate"
+version = "3.3.1"
+wheels = [{ url = "https://files.pythonhosted.org/packages/9a/70/875f4a23bfc4731703a5835487d0d2fb999031bd415e7d17c0ae615c18b7/pathvalidate-3.3.1-py3-none-any.whl", upload-time = 2025-06-15T09:07:19Z, size = 24305, hashes = { sha256 = "5263baab691f8e1af96092fa5137ee17df5bdfbd6cff1fcac4d6ef4bc2e1735f" } }]
+
+[[packages]]
+name = "piper-tts"
+version = "1.8.0"
+wheels = [{ url = "https://files.pythonhosted.org/packages/12/9c/c736d1961cf9ce0655278731b9430df41892ca2ded7b09dabcb340612158/piper_tts-1.8.0-cp39-abi3-win_amd64.whl", upload-time = 2026-09-04T16:47:28Z, size = 34119688, hashes = { sha256 = "5da9bfdb05dfe15da3536859d422e605483ffa6d2b3ec2c5b9593bae6b5aa6a4" } }]
