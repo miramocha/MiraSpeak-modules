@@ -28,7 +28,6 @@ LICENSE_NOTE = (
 )
 NO_VOICES = ui.Empty(
     "No Piper voices yet",
-    "Pick a voice above and press Download.",
     action="download",
     action_label="Download",
     art="list",
@@ -262,6 +261,12 @@ class PiperModule(Module):
         self._run("Downloading…", work, done)
 
     def _remove(self, alias: str) -> None:
+        if not self._ctx.confirm(
+            f"Remove {alias}?",
+            accept=f"Remove {alias}",
+            decline=f"Keep {alias}",
+        ):
+            return
         voices = self._voices()
         if voices is None or alias not in voices:
             self._status("That voice is not installed.", ui.TONE_WARNING)

@@ -21,7 +21,6 @@ _MISALIGNED = "Couldn't line the lyrics up with playback."
 class LyricsModule(Module):
     def page(self) -> ui.Page:
         return ui.Page(
-            intro="Look up lyrics on LRCLIB and speak them line by line.",
             sections=(
                 ui.Section(
                     "Song",
@@ -35,7 +34,13 @@ class LyricsModule(Module):
                 ui.Section(
                     "Speak",
                     (
-                        ui.Rows("lines", "Lines", row_actions=("Speak",), speaks=True),
+                        ui.Rows(
+                            "lines",
+                            "Lines",
+                            row_actions=("Speak",),
+                            when_empty=ui.Empty("No lyrics yet"),
+                            speaks=True,
+                        ),
                         ui.Button("speak_all", "Speak all", speaks=True),
                         ui.Button("stop", "Stop"),
                     ),

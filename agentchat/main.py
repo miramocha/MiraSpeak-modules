@@ -43,10 +43,6 @@ _READY_RETRY_S = 0.25
 _UNREADABLE = "This agent list isn't one MiraSpeak can read."
 _URL = "Use an https URL, or http to this computer."
 
-INTRO = (
-    "Sends what you type to an agent and plays a filler while you wait. The agent speaks the reply."
-)
-
 
 class AgentChatModule(Module):
     """Bundled page. It stays under Speak so the page can turn the module off and on."""
@@ -62,7 +58,6 @@ class AgentChatModule(Module):
 
     def page(self) -> ui.Page:
         return ui.Page(
-            intro=INTRO,
             sections=(
                 ui.Section(
                     "",
@@ -72,7 +67,7 @@ class AgentChatModule(Module):
                             agent="agent",
                             action="send",
                             button="Send",
-                            placeholder="Ask something short.",
+                            placeholder="Type a message.",
                             status="say",
                         ),
                         ui.Choice("agent", "Agent"),
@@ -87,12 +82,7 @@ class AgentChatModule(Module):
                             "Agents",
                             row_actions=("Up", "Down", "Remove"),
                             click="edit",
-                            when_empty=ui.Empty(
-                                "No agents yet",
-                                "Add an agent to send a turn.",
-                                action="add",
-                                action_label="Add",
-                            ),
+                            when_empty=ui.Empty("No agents yet", action="add", action_label="Add"),
                         ),
                         ui.Button("add", "Add"),
                     ),
@@ -101,8 +91,8 @@ class AgentChatModule(Module):
                     "Connection",
                     (
                         ui.Text("name", "Name"),
-                        ui.Text("url", "Webhook URL", placeholder="https://", mono=True),
-                        ui.Secret("webhook_key", "Webhook key", "Paste the key"),
+                        ui.Text("url", "Webhook URL", mono=True),
+                        ui.Secret("webhook_key", "Webhook key"),
                         ui.Status("key_status", "No key yet."),
                         ui.Choice(
                             "preset",
@@ -113,8 +103,9 @@ class AgentChatModule(Module):
                         ui.Choice("persona", "Persona"),
                         ui.Choice("cue", "Filler cue", (("", "Default"),)),
                         ui.Number("cap", "Daily cap", maximum=CAP_MAX),
+                        ui.Status("cap_hint", "0 means no limit"),
                         ui.Toggle("conn_on", "Enabled", default=True),
-                        ui.Button("save", "Save"),
+                        ui.Button("save", "Save connection"),
                         ui.Status("save_status"),
                     ),
                 ),
@@ -122,8 +113,8 @@ class AgentChatModule(Module):
                     "Settings",
                     (
                         ui.Choice("default_agent", "Default agent"),
-                        ui.Toggle("filler", "Speak a filler", default=True),
-                        ui.Text("thinking", "Still thinking", placeholder="thinking"),
+                        ui.Toggle("filler", "Play filler", default=True),
+                        ui.Text("thinking", "Still thinking"),
                         ui.Status(
                             "thinking_hint",
                             "Cue name, played after 10 seconds. "
@@ -332,6 +323,12 @@ class AgentChatModule(Module):
         if ctx is None or not 0 <= row < len(self._doc.connections):
             return
         conn = self._doc.connections[row]
+        if not ctx.confirm(
+            f"Remove {conn.name}?",
+            accept=f"Remove {conn.name}",
+            decline=f"Keep {conn.name}",
+        ):
+            return
         ctx.secrets.clear(f"conn-{conn.id}")
         rows = self._doc.connections[:row] + self._doc.connections[row + 1 :]
         self._doc = replace(self._doc, connections=rows)
@@ -396,7 +393,7 @@ class AgentChatModule(Module):
     def _draft(self) -> Connection | str:
         ctx = self._ctx
         if ctx is None:
-            return "Turn Agent Chat on to save."
+            return "Turn Agent chat on to save."
         name = str(ctx.values.get("name") or "").strip()
         if not name or len(name) > NAME_MAX:
             return "Name the connection."
