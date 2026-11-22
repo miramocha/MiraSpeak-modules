@@ -18,9 +18,8 @@ from .epub import EpubBook, EpubError, load_epub
 
 NO_BOOK = ui.Empty(
     "No book open",
-    "Pick an .epub file to start reading.",
     action="book",
-    action_label="Open File…",
+    action_label="Open file",
     art="file",
 )
 EMPTY_CHAPTER = ui.Empty("This chapter has no text")
@@ -30,7 +29,6 @@ OPENING = ui.Empty("Opening book…")
 class EpubModule(Module):
     def page(self) -> ui.Page:
         return ui.Page(
-            intro="Open an EPUB and read it aloud, following the sentence.",
             sections=(
                 ui.Section(
                     "",

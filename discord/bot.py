@@ -339,7 +339,7 @@ class BotRunner:
                 await voice.move_to(channel)
         except (TimeoutError, discord.DiscordException) as e:  # before OSError: it is one
             await self._drop_failed_voice(channel)
-            self._report("failed", f"Could not join #{channel.name}: {e or 'timed out'}")
+            self._report("failed", f"Couldn't join #{channel.name}: {e or 'timed out'}")
             return
         except (OSError, aiohttp.ClientError) as e:  # includes ClientConnectorError
             log.warning("discord voice server unreachable: %s", e)
@@ -394,7 +394,7 @@ class BotRunner:
             voice.play(source, after=self._after_play)
         except discord.DiscordException as e:  # includes OpusNotLoaded
             stream.close()
-            self._report("failed", f"Could not play audio: {e}")
+            self._report("failed", f"Couldn't play audio: {e}")
 
     async def _edit_profile(self, done: str, **fields: Any) -> None:
         client = self._client
@@ -408,7 +408,7 @@ class BotRunner:
             self._report("profile_failed", profile_problem(e))
         except (OSError, aiohttp.ClientError) as e:
             log.warning("discord profile update failed: %s", e)
-            self._report("profile_failed", f"Could not reach Discord: {e}")
+            self._report("profile_failed", f"Couldn't reach Discord: {e}")
         else:
             self._report("profile", done)
 

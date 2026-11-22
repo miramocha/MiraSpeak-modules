@@ -40,10 +40,6 @@ INVITE_PERMISSIONS = 3_146_752
 INVITE_URL = "https://discord.com/oauth2/authorize?client_id={}&scope=bot&permissions={}"
 
 GUIDE_URL = "https://github.com/miramocha/MiraSpeak-docs/blob/main/guides/discord.md"
-INTRO = (
-    "Each person uses their own Discord bot. Press Open setup guide for the steps, "
-    "with screenshots."
-)
 
 
 def invite_url(token: str) -> str | None:
@@ -108,14 +104,14 @@ class DiscordModule(Module):
 
     def page(self) -> ui.Page:
         return ui.Page(
-            intro=INTRO,
             sections=(
                 ui.Section(
                     "Bot",
                     (
                         ui.Button("guide", "Open setup guide"),
                         ui.Button("portal", "Open developer portal"),
-                        ui.Secret("token", "Bot token", placeholder="Paste the token here"),
+                        ui.Secret("token", "Bot token"),
+                        ui.Status("own_bot", "Use your own Discord bot"),
                         ui.Button("invite", "Open invite link"),
                         ui.Button("connect", "Connect"),
                         ui.Status("status", "Not connected."),
@@ -126,13 +122,12 @@ class DiscordModule(Module):
                     (
                         ui.File("avatar", "Avatar", extensions=AVATAR_TYPES, inline=True),
                         ui.Button("set_avatar", "Update avatar", enabled=False),
-                        ui.Text(
-                            "username", "Name", placeholder="Discord limits how often a bot renames"
-                        ),
+                        ui.Text("username", "Name"),
+                        ui.Status("rename_limit", "Discord limits how often a bot renames"),
                         ui.Button("set_name", "Update name", enabled=False),
                         ui.Toggle(
                             "show_activity",
-                            'Show "Speaking as <voice>" as the bot\'s activity',
+                            "Show the voice name as the bot's activity",
                             True,
                         ),
                     ),
@@ -264,7 +259,7 @@ class DiscordModule(Module):
         try:
             self.ctx.open_url(url)
         except ModuleError as e:
-            self._status(f"Could not open the browser: {e}", warn=True)
+            self._status(f"Couldn't open the browser: {e}", warn=True)
 
     # connecting
 
@@ -330,7 +325,7 @@ class DiscordModule(Module):
                 return
             image = path.read_bytes()
         except OSError as e:
-            self._status(f"Could not read the image: {e}", warn=True)
+            self._status(f"Couldn't read the image: {e}", warn=True)
             return
         self._status("Updating avatar…")
         self._runner.set_avatar(image)
@@ -421,15 +416,17 @@ class DiscordModule(Module):
             self._sync_controls()
             self._drop_pending()
         elif kind == "played":
-            frames, peak, encrypted = detail
+            _frames, peak, encrypted = detail
             loud = round(peak / 32767 * 100)
-            text = f"Sent {frames * 0.02:.1f} s to Discord, peak {loud}%."
+            notes = ["Sent to Discord."]
+            if loud == 0:
+                notes.append("The line peaked at 0%, so listeners may have heard nothing.")
             if not encrypted:
-                text += (
-                    " Discord's voice encryption is not ready, so listeners may hear nothing. "
+                notes.append(
+                    "Discord's voice encryption is not ready, so listeners may hear nothing. "
                     "Have someone in the channel before the bot joins, then press Leave and Join."
                 )
-            self._status(text, warn=loud == 0 or not encrypted)
+            self._status(" ".join(notes), warn=loud == 0 or not encrypted)
         elif kind == "failed":
             self._joining = False
             self._sync_controls()

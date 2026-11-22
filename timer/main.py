@@ -28,24 +28,24 @@ _MAX_INTERVAL_S = 180 * 60 + 59
 class TimerModule(Module):
     def page(self) -> ui.Page:
         return ui.Page(
-            intro=(
-                "Say a phrase on a timer, using the voice bar below. "
-                "Shortest interval is 5 seconds. The phrase cannot be edited "
-                "while the timer is running."
-            ),
             sections=(
                 ui.Section(
                     "Phrase",
                     (
                         ui.Text("phrase", "Phrase", default="Time check."),
+                        ui.Status(
+                            "phrase_lock",
+                            "The phrase cannot be edited while the timer is running",
+                        ),
                         ui.Number(
                             "seconds",
                             "Every",
                             default=_DEFAULT_INTERVAL_S,
-                            minimum=0,
+                            minimum=_MIN_INTERVAL_S,
                             maximum=_MAX_INTERVAL_S,
                             suffix=" sec",
                         ),
+                        ui.Status("every_hint", "Shortest interval is 5 seconds"),
                     ),
                 ),
                 ui.Section(
@@ -53,7 +53,7 @@ class TimerModule(Module):
                     (
                         ui.Button("run", "Start"),
                         ui.Progress("wait"),
-                        ui.Status("next", "Press Start."),
+                        ui.Status("next"),
                     ),
                 ),
             ),
